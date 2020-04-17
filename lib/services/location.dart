@@ -5,7 +5,7 @@ class Location {
   double longitude;
   double latitude;
 
-  Future<void> getCurrentLocation() async {
+  Future<void> getCurrentLocationFromGeolocator() async {
     try {
       Position position = await Geolocator()
           .getLastKnownPosition(desiredAccuracy: LocationAccuracy.low);
@@ -16,15 +16,15 @@ class Location {
     }
   }
 
-  Future<void> getData() async {
+  Future<String> getData() async {
     Http.Response response = await Http.get(
         'https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=439d4b804bc8187953eb36d2a8c26a02');
 
     if (response.statusCode != 200) {
       print(response.statusCode);
-      return;
+      return null;
     }
 
-    print(response.body);
+    return response.body;
   }
 }
