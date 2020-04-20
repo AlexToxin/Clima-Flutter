@@ -29,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Center(
         child: SpinKitPouringHourglass(
           color: Colors.white,
-          size: 50.0,
+          size: 150.0,
         ),
       ),
     );
@@ -39,11 +39,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await _location.getCurrentLocationFromGeolocator();
 
     NetworkHelper networkHelper = NetworkHelper(
-        url: 'https://api.openweathermap.org/data/2.5/weather?lat=' +
-            _location.latitude.toString() +
-            '&lon=' +
-            _location.longitude.toString() +
-            '&appid=$apiKey');
+        url:
+        'https://api.openweathermap.org/data/2.5/weather?lat=${_location
+            .latitude}&lon=${_location.longitude}&appid=$apiKey&units=metric');
 
     var data = await networkHelper.getData();
 
@@ -51,7 +49,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return LocationScreen();
+          return LocationScreen(
+            weatherData: data,
+          );
         },
       ),
     );
