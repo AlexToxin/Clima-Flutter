@@ -1,6 +1,6 @@
-import 'dart:convert';
-
 import 'package:clima/services/location.dart';
+import 'package:clima/services/networking.dart';
+import 'package:clima/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -26,14 +26,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold();
   }
 
-  void getCurrentLocation() async {
+  void getCurrentLocationData() async {
     await _location.getCurrentLocationFromGeolocator();
-    String data = await _location.getData();
 
-    var decodedData = json.decode(data);
+    NetworkHelper networkHelper = NetworkHelper(
+        url: 'https://api.openweathermap.org/data/2.5/weather?lat=' +
+            _location.latitude.toString() +
+            '&lon=' +
+            _location.longitude.toString() +
+            '&appid=$apiKey');
 
-    weatherId = decodedData['weather'][0]['id'];
-    temperature = decodedData['main']['temp'];
-    city = decodedData['name'];
+    var data = await networkHelper.getData();
   }
 }
